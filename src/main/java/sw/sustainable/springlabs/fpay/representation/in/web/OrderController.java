@@ -3,6 +3,7 @@ package sw.sustainable.springlabs.fpay.representation.in.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import sw.sustainable.springlabs.core.common.ApiResponse;
 import sw.sustainable.springlabs.fpay.application.port.in.CreateNewOrderUseCase;
 import sw.sustainable.springlabs.fpay.application.port.in.GetOrderInfoUseCase;
 import sw.sustainable.springlabs.fpay.representation.request.order.PurchaseOrder;

@@ -37,6 +37,7 @@ public class OrderControllerDocTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
     public void newOrder_2XX_CorrectConstraintValue() throws Exception {
         PurchaseOrder newOrder = new PurchaseOrder(new Orderer("유진호", "010-1234-1234"),

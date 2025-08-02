@@ -58,7 +58,7 @@ public class Order {
 
     public boolean verifyDuplicateOrderItemId() {
         List<UUID> productIds = this.getItems().stream().map(OrderItem::getProductId).distinct().toList();
-        if (!productIds.isEmpty()) return true;
+        if (productIds.isEmpty() || this.getItems().size()==productIds.size()) return true;
         else throw new IllegalArgumentException();
     }
 

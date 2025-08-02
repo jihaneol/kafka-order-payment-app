@@ -74,7 +74,7 @@ openapi3 {
 
 tasks.register<Copy>("copyOasToSwagger") {
     delete("src/main/resources/static/swagger-ui/openapi3.yaml") // 기존 yaml 파일 삭제
-    from("$buildDir/api-spec/openapi3.yaml") // 복제할 yaml 파일 타겟팅
+    from(layout.buildDirectory.file("api-spec/openapi3.yaml"))
     into("src/main/resources/static/swagger-ui/.") // 타겟 디렉토리로 파일 복제
     dependsOn("openapi3") // openapi3 task가 먼저 실행되도록 설정
 }

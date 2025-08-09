@@ -20,4 +20,9 @@ public class OrderController {
         return NewPurchaseOrder.from(createNewOrderUseCase.createNewOrder(purchaseOrder));
     }
 
+    @GetMapping
+    public String test() {
+        return "OK";
+    }
+
 }

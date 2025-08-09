@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -18,7 +20,7 @@ import java.util.List;
 @ConfigurationProperties("error-trace")
 @RestControllerAdvice
 @Slf4j
-public class GlobalException extends ResponseEntityExceptionHandler {
+public class GlobalException extends  ResponseEntityExceptionHandler {
 
     private boolean stackTrace;
 
@@ -38,7 +40,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         if (stackTrace) {
             stackTraces = Arrays.asList(ex.getStackTrace());
         }
-        logger.error("ERROR ::: [IOException] ", ex);
+        log.error("ERROR ::: [IOException] ", ex);
         return new ErrorResponse(stackTraces, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -49,7 +51,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         if (stackTrace) {
             stackTraces = Arrays.asList(ex.getStackTrace());
         }
-        logger.error("ERROR ::: [AllException] ", ex);
+        log.error("ERROR ::: [AllException] ", ex);
         return new ErrorResponse(stackTraces, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

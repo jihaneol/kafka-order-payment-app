@@ -1,6 +1,7 @@
 package sw.sustainable.springlabs.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.common.lang.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -31,7 +32,12 @@ public class CommonHttpMessageConverter extends AbstractHttpMessageConverter<Api
 
     @Override
     protected boolean supports(Class<?> clazz) {
-        return clazz.equals(ApiResponse.class) || clazz.isPrimitive();
+        return clazz.equals(ApiResponse.class) || clazz.isPrimitive() || clazz.equals(String.class);
+    }
+
+    @Override
+    public boolean canRead(Class<?> clazz, @Nullable MediaType mediaType) {
+        return false;
     }
 
     @Override

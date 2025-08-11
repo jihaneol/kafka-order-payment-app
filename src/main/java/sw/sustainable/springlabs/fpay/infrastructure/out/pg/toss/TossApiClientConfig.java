@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class TossApiClientConfig {
     private static final String BASE_URL = "https://api.tosspayments.com/v1/";
-    private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
+    private static final String SECRET_KEY = "test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R";
 
     @Bean
     public OkHttpClient okHttpClient() {

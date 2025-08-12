@@ -14,7 +14,7 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class PaymentService implements PaymentFullFillUseCase {
-    private final PaymentAPIs paymentAPIs;
+    private final PaymentAPIs tossPayments;
     private final OrderRepository orderRepository;
     private final PaymentLedgerRepository paymentLedgerRepository;
     private TransactionTypeRepository transactionTypeRepository;

@@ -1,9 +1,11 @@
-package sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss;
+package sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.mock;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import retrofit2.Call;
 import retrofit2.Response;
 import sw.sustainable.springlabs.fpay.application.port.out.api.PaymentAPIs;
+import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.TossPaymentAPIs;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproved;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentCancel;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentSettlements;
@@ -18,15 +20,12 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TossPayments implements PaymentAPIs {
-    private final TossPaymentAPIs tossClient;
+public class MockTossPayments implements PaymentAPIs {
+    private final MockTossPaymentAPIs mockTossPaymentAPI;
 
-    public ResponsePaymentApproved requestPaymentApprove(PaymentApproved paymentInfo) throws IOException {
-        Response<ResponsePaymentApproved> response = tossClient.paymentFullfill(paymentInfo).execute();
-        if(response.isSuccessful()) {
-            return response.body();
-        }
-        throw new IOException(response.message());
+    @Override
+    public ResponsePaymentApproved requestPaymentApprove(PaymentApproved requestMessage) throws IOException {
+        return null;
     }
 
     @Override
@@ -41,12 +40,9 @@ public class TossPayments implements PaymentAPIs {
 
     @Override
     public List<ResponsePaymentSettlements> requestPaymentSettlement() throws IOException {
-        String startDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(3).toString();
-        String endDate = LocalDate.now(ZoneId.of("Asia/Seoul")).toString();
-        int page = 1;
-        int size = 5000;
-        Response<List<ResponsePaymentSettlements>> response = tossClient.paymentSettlements(startDate, endDate, page, size).execute();
-        if(response.isSuccessful() && response.body() != null &&  !response.body().isEmpty()) {
+
+        Response<List<ResponsePaymentSettlements>> response= mockTossPaymentAPI.paymentSettlements().execute();
+        if(response.isSuccessful() && response.body()!=null && !response.body().isEmpty()) {
             return response.body();
         }
         throw new IOException(response.message());

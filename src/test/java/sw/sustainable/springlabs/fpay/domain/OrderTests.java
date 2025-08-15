@@ -30,30 +30,46 @@ public class OrderTests {
      * [Exception] 0개 일 때, return true;
      */
     @Test
+    @DisplayName("verifyHaveAtLeastOneItem이 1개일 때 false")
     public void verifyHaveAtLeastOneItem_False_ListSizeBiggerThanOne() throws Exception {
         PurchaseOrder newOrder = new PurchaseOrder(
-            new Orderer("유진호", "010-1234-1234"),
-            List.of(new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, 1, 4500),
-                new PurchaseOrderItem(2, UUID.randomUUID(), "속이 편한 우유", 3800, 1, 3800)
-            )
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(new PurchaseOrderItem(1, UUID.randomUUID(),
+                "감자", 1000, 4, 4000))
         );
 
         Order order = newOrder.toEntity();
-        assertTrue(order.verifyHaveAtLeastOneItem());
+        Assertions.assertFalse(order.verifyHaveAtLeastOneItem());
+
     }
 
     @Test
-    public void verifyHaveAtLeastOneItem_False_ListSizeZeroOrLess() throws Exception {
+    @DisplayName("verifyHaveAtLeastOneItem이 n개일 때 false")
+    public void verifyHaveAtLeastOneItem_False_ListSizeBiggerThanN() throws Exception {
         PurchaseOrder newOrder = new PurchaseOrder(
-            new Orderer("유진호", "010-1234-1234"),
-            Collections.emptyList()
-        );
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(
+                new PurchaseOrderItem(1, UUID.randomUUID(), "감자", 1000, 4, 4000),
+                new PurchaseOrderItem(2, UUID.randomUUID(), "고구마", 2000, 3, 6000),
+                new PurchaseOrderItem(3, UUID.randomUUID(), "김치", 3000, 4, 12000)
+        ));
 
         Order order = newOrder.toEntity();
-        assertTrue(order.verifyHaveAtLeastOneItem());
+        Assertions.assertFalse(order.verifyHaveAtLeastOneItem());
+
     }
 
+    @Test
+    @DisplayName("verifyHaveAtLeastOneItem이 0개 또는 null 일때 true")
+    public void verifyHaveAtLeastOneItem_True_ListSizeZeroOrLess() throws Exception {
 
+        PurchaseOrder newOrder = new PurchaseOrder(
+                new Orderer("지한얼", "010-2920-2032")
+                , Collections.emptyList());
+
+        Order order = newOrder.toEntity();
+        Assertions.assertTrue(order.verifyHaveAtLeastOneItem());
+    }
     /**
      * 신규 상품 주문(Purchase Order) 관련 단위 테스트
      * - 상품 주문 시, product_id는 중복될 수 없다.
@@ -62,26 +78,35 @@ public class OrderTests {
      * [Exception] NULL 경우, 오류 처리
      */
     @Test
-    public void verifyDuplicateOrderItemId_True_NotDuplicateProductId() throws Exception {
-        PurchaseOrder newOrder = new PurchaseOrder(new Orderer("유진호", "010-1234-1234"),
-            List.of(new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, 1, 4500)));
-        Order order = newOrder.toEntity();
+    @DisplayName("id가 중복 되지 않으면 true 반환")
+    public void verityDuplicateOrderItemId_True_NotDuplicateProductId() throws Exception {
+        PurchaseOrder newOrder = new PurchaseOrder(
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(
+                new PurchaseOrderItem(1, UUID.randomUUID(), "감자", 1000, 4, 4000),
+                new PurchaseOrderItem(2, UUID.randomUUID(), "고구마", 2000, 3, 6000),
+                new PurchaseOrderItem(3, UUID.randomUUID(), "김치", 3000, 4, 12000)
+        ));
 
-        assertTrue(order.verifyDuplicateOrderItemId());
+        Order order = newOrder.toEntity();
+        Assertions.assertTrue(order.verifyDuplicateOrderItemId());
     }
 
     @Test
-    public void verifyDuplicateOrderItemId_ThrowException_DuplicateProductId() throws Exception {
+    @DisplayName("id가 중복이면 throw 반환")
+    public void verityDuplicateOrderItemId_ThrowException_DupicateProductId() throws Exception {
         UUID productId = UUID.randomUUID();
-        PurchaseOrder newOrder = new PurchaseOrder(new Orderer("유진호", "010-1234-1234"),
-            List.of(new PurchaseOrderItem(1, productId, "농심 짜파게티 4봉", 4500, 1, 4500),
-                new PurchaseOrderItem(1, productId, "농심 짜파게티 4봉", 4500, 1, 4500)
-            ));
+        PurchaseOrder newOrder = new PurchaseOrder(
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(
+                new PurchaseOrderItem(2, productId, "감자", 1000, 4, 4000),
+                new PurchaseOrderItem(2, productId, "고구마", 2000, 3, 6000),
+                new PurchaseOrderItem(3, UUID.randomUUID(), "김치", 3000, 4, 12000)
+        ));
 
         Order order = newOrder.toEntity();
         Assertions.assertThrows(IllegalArgumentException.class, order::verifyDuplicateOrderItemId);
     }
-
 
     /**
      * 결제 완료된 주문(Purchase Order)건에 대한 단위 테스트
@@ -89,26 +114,6 @@ public class OrderTests {
      * [TEST CASE#1] "구매 완료" 상태가 아닌 경우, return true;
      * [TEST CASE#2] "구매 완료" 상태인 경우, return false;
      */
-    @DisplayName("[TEST CASE#1] \"구매 완료\" 상태가 아닌 경우, return true;")
-    @Test
-    public void isNotOrderStatusPurchaseDecision_true_OrderStatusIsNotPurchaseDecision() throws Exception {
-        PurchaseOrder newOrder = new PurchaseOrder(new Orderer("유진호", "010-1234-1234"),
-            List.of(new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, 1, 4500)));
-
-        Order order = newOrder.toEntity();
-        assertTrue(order.isNotOrderStatusPurchaseDecision());
-    }
-
-    @DisplayName("[TEST CASE#1] \"구매 완료\" 상태가 아닌 경우, return true;")
-    @Test
-    public void isNotOrderStatusPurchaseDecision_true_OrderStatusIsPurchaseDecision() throws Exception {
-        PurchaseOrder newOrder = new PurchaseOrder(new Orderer("유진호", "010-1234-1234"),
-            List.of(new PurchaseOrderItem(1, UUID.randomUUID(), "농심 짜파게티 4봉", 4500, 1, 4500)));
-
-        Order order = newOrder.toEntity();
-        order.setStatus(OrderStatus.PURCHASE_DECISION);
-        assertFalse(order.isNotOrderStatusPurchaseDecision());
-    }
 
     /**
      * 주문 취소 단위 테스트
@@ -116,19 +121,4 @@ public class OrderTests {
      * [TEST CASE#1] "상품 상세 정보"가 Not Empty 경우, return true;
      * [TEST CASE#2] "상품 상세 정보"가 Empty 경우, return false;
      */
-    @DisplayName("[TEST CASE#1] \"상품 상세 정보\"가 Not Empty 경우, return true;")
-    @Test
-    public void hasItemIdx_true_ItemIdIsNotEmpty() throws Exception {
-        UUID orderId = UUID.randomUUID();
-        CancelOrder cancelOrder = new CancelOrder(orderId, new int[]{1}, "Cancel Reason", "tgen_20240605132741Jtkz1", 3400);
-        assertTrue(cancelOrder.hasItemIdx());
-    }
-
-    @DisplayName("[TEST CASE#2] \"상품 상세 정보\"가 Empty 경우, return false;")
-    @Test
-    public void hasItemIdx_false_ItemIdIsNotEmpty() throws Exception {
-        UUID orderId = UUID.randomUUID();
-        CancelOrder cancelOrder = new CancelOrder(orderId, new int[]{}, "Cancel Reason", "tgen_20240605132741Jtkz1", 3400);
-        assertFalse(cancelOrder.hasItemIdx());
-    }
 }

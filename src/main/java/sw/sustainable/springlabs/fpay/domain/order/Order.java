@@ -52,13 +52,12 @@ public class Order {
     }
 
     public boolean verifyHaveAtLeastOneItem() throws Exception {
-        if (items != null || !items.isEmpty()) return true;
-        else throw new Exception("");
+        return items.isEmpty() || items == null;
     }
 
     public boolean verifyDuplicateOrderItemId() {
         List<UUID> productIds = this.getItems().stream().map(OrderItem::getProductId).distinct().toList();
-        if (productIds.isEmpty() || this.getItems().size()==productIds.size()) return true;
+        if (productIds.isEmpty() || this.getItems().size() == productIds.size()) return true;
         else throw new IllegalArgumentException();
     }
 
@@ -80,7 +79,7 @@ public class Order {
 
     private void orderCancelBy(int itemIdx) {
         this.items.stream().filter(orderItem -> orderItem.getItemIdx() == itemIdx)
-            .forEach(item -> item.update(OrderStatus.ORDER_CANCELLED));
+                .forEach(item -> item.update(OrderStatus.ORDER_CANCELLED));
     }
 
     public boolean isNotOrderStatusPurchaseDecision() {

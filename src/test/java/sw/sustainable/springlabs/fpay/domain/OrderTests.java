@@ -114,6 +114,35 @@ public class OrderTests {
      * [TEST CASE#1] "구매 완료" 상태가 아닌 경우, return true;
      * [TEST CASE#2] "구매 완료" 상태인 경우, return false;
      */
+    @DisplayName("[TEST CASE#1] \"구매 완료\" 상태가 아닌 경우, return true")
+    @Test
+    public void isNotOrderStatusPurchaseDecision_true_OrderStatusIsNotPurchaseDecision() throws Exception {
+        PurchaseOrder newOrder = new PurchaseOrder(
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(
+                new PurchaseOrderItem(1, UUID.randomUUID(), "감자", 1000, 4, 4000),
+                new PurchaseOrderItem(2, UUID.randomUUID(), "고구마", 2000, 3, 6000),
+                new PurchaseOrderItem(3, UUID.randomUUID(), "김치", 3000, 4, 12000)
+        ));
+
+        Order order = newOrder.toEntity();
+        assertTrue(order.isNotOrderStatusPurchaseDecision());
+    }
+    @DisplayName("[TEST CASE#2] \"구매 완료\" 상태인 경우, return false")
+    @Test
+    public void isNotOrderStatusPurchaseDecision_false_OrderStatusIsPurchaseDecision() throws Exception {
+        PurchaseOrder newOrder = new PurchaseOrder(
+                new Orderer("지한얼", "010-2920-2032")
+                , List.of(
+                new PurchaseOrderItem(1, UUID.randomUUID(), "감자", 1000, 4, 4000),
+                new PurchaseOrderItem(2, UUID.randomUUID(), "고구마", 2000, 3, 6000),
+                new PurchaseOrderItem(3, UUID.randomUUID(), "김치", 3000, 4, 12000)
+        ));
+
+        Order order = newOrder.toEntity();
+        order.setStatus(OrderStatus.PURCHASE_DECISION);
+        assertFalse(order.isNotOrderStatusPurchaseDecision());
+    }
 
     /**
      * 주문 취소 단위 테스트
@@ -121,4 +150,19 @@ public class OrderTests {
      * [TEST CASE#1] "상품 상세 정보"가 Not Empty 경우, return true;
      * [TEST CASE#2] "상품 상세 정보"가 Empty 경우, return false;
      */
+    @DisplayName("[TEST CASE#1] \"상품 상세 정보\"가 Not Empty 경우, return true;")
+    @Test
+    public void hasItemIdx_true_ItemIdisNotEmpty() throws Exception {
+       CancelOrder cancelOrder = new CancelOrder(UUID.randomUUID(), new int[]{1,2}, "별로다", "soudfho", 1000);
+       assertTrue(cancelOrder.hasItemIdx());
+
+    }
+    @DisplayName("[TEST CASE#2] \"상품 상세 정보\"가 Empty 경우, return false")
+    @Test
+    public void hasItemIdx_false_ItemIdIsNotEmpty() throws Exception {
+        CancelOrder cancelOrder = new CancelOrder(UUID.randomUUID(), null, "별로다", "soudfho", 1000);
+        assertFalse(cancelOrder.hasItemIdx());
+    }
 }
+
+

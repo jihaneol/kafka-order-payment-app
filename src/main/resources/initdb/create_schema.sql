@@ -1,11 +1,11 @@
-CREATE DATABASE IF NOT EXISTS `fastcamp_labs`;
-USE fastcamp_labs;
-CREATE USER IF NOT EXISTS `fastcamp`@`localhost` IDENTIFIED BY 'testlabs';
-CREATE USER `fastcamp`@`%` IDENTIFIED BY 'testlabs';
-GRANT all privileges ON `fastcamp_labs`.* TO `fastcamp`@`localhost`;
-GRANT all privileges ON `fastcamp_labs`.* TO `fastcamp`@`%`;
+CREATE DATABASE IF NOT EXISTS `kafka_order`;
+USE kafka_order;
 
-CREATE TABLE `purchase_order`
+CREATE USER IF NOT EXISTS `root`@`localhost` IDENTIFIED BY 'testlabs';
+CREATE USER `root`@`%` IDENTIFIED BY 'testlabs';
+
+GRANT ALL PRIVILEGES ON `kafka_order`.* TO `root`@`localhost`;
+GRANT ALL PRIVILEGES ON `kafka_order`.* TO `root`@`%`;CREATE TABLE `purchase_order`
 (
     `order_id`     BINARY(16) default (uuid_to_bin(uuid())) NOT NULL COMMENT '주문번호',
     `name`         VARCHAR(255)                             NOT NULL COMMENT '주문자명',

@@ -16,12 +16,13 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class TossApiClientConfig {
     private static final String BASE_URL = "https://api.tosspayments.com/v1/";
-    private static final String SECRET_KEY = "test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R";
+    private static final String SECRET_KEY = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6:";
+
 
     @Bean
     public OkHttpClient okHttpClient() {
         Base64.Encoder encoder = Base64.getEncoder();
-        byte[] encodedKey = encoder.encode((SECRET_KEY + ":").getBytes(StandardCharsets.UTF_8));
+        byte[] encodedKey = encoder.encode((SECRET_KEY).getBytes(StandardCharsets.UTF_8));
         String authorization = "Basic " + new String(encodedKey);
 
         return new OkHttpClient.Builder()

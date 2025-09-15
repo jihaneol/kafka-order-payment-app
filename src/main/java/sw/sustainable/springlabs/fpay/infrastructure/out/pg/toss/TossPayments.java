@@ -31,6 +31,9 @@ public class TossPayments implements PaymentAPIs {
 
     @Override
     public boolean isPaymentApproved(String status) {
+        if("DONE".equals(status)) {
+            return true;
+        }
         return false;
     }
 

@@ -9,7 +9,6 @@ import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.Respon
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentSettlements;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentApproved;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentCancel;
-import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentSettlement;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ public class TossPayments implements PaymentAPIs {
 
     public ResponsePaymentApproved requestPaymentApprove(PaymentApproved paymentInfo) throws IOException {
         Response<ResponsePaymentApproved> response = tossClient.paymentFullfill(paymentInfo).execute();
-        if(response.isSuccessful()) {
+        if (response.isSuccessful()) {
             return response.body();
         }
         throw new IOException(response.message());
@@ -31,7 +30,7 @@ public class TossPayments implements PaymentAPIs {
 
     @Override
     public boolean isPaymentApproved(String status) {
-        if("DONE".equals(status)) {
+        if ("DONE".equals(status)) {
             return true;
         }
         return false;
@@ -49,7 +48,7 @@ public class TossPayments implements PaymentAPIs {
         int page = 1;
         int size = 5000;
         Response<List<ResponsePaymentSettlements>> response = tossClient.paymentSettlements(startDate, endDate, page, size).execute();
-        if(response.isSuccessful() && response.body() != null &&  !response.body().isEmpty()) {
+        if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
             return response.body();
         }
         throw new IOException(response.message());

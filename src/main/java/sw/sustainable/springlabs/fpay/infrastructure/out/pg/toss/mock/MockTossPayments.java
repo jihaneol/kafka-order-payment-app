@@ -2,20 +2,15 @@ package sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.mock;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import retrofit2.Call;
 import retrofit2.Response;
 import sw.sustainable.springlabs.fpay.application.port.out.api.PaymentAPIs;
-import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.TossPaymentAPIs;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentApproved;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentCancel;
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentSettlements;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentApproved;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentCancel;
-import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentSettlement;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 @Component

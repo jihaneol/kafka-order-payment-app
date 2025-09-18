@@ -5,7 +5,6 @@ import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.Respon
 import sw.sustainable.springlabs.fpay.infrastructure.out.pg.toss.response.ResponsePaymentSettlements;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentApproved;
 import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentCancel;
-import sw.sustainable.springlabs.fpay.representation.request.payment.PaymentSettlement;
 
 import java.io.IOException;
 import java.util.List;
